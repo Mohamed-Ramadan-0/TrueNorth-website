@@ -1,0 +1,129 @@
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <h1>فريق رقمي بيشتغل جوه بزنسك <span class="nowrap">24 ساعة</span></h1>
+      <p class="lede">بنبني AI agents بترد على عملائك، وتأكد أوردراتك، وتتابع الشحن، وانت مركز في النمو.</p>
+      <div class="actions">
+        <a routerLink="/book-demo" class="btn btn-signal">احجز ديمو مجاني</a>
+        <a routerLink="/" fragment="demo" class="btn btn-ghost-light">شوف الـ agent شغال</a>
+      </div>
+    </div>
+    <tn-dial class="hero-dial" />
+  </div>
+</section>
+
+<section class="section" aria-labelledby="pain-h">
+  <div class="wrap split">
+    <h2 id="pain-h" class="h2">الشغل اللي بياكل يوم فريقك</h2>
+    <ul class="pains">
+      @for (p of pains; track p.title) {
+        <li><h3>{{ p.title }}</h3><p>{{ p.body }}</p></li>
+      }
+    </ul>
+  </div>
+</section>
+
+<section class="section section-alt" aria-labelledby="domains-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="domains-h" class="h2">agents لكل قسم في البزنس</h2>
+      <p>بنبدأ بالمتاجر الإلكترونية، وكل مجال جديد بيتفتح لما يبقى عندنا نتايج حقيقية في اللي قبله.</p>
+    </div>
+    <div class="domains" role="list">
+      @for (d of domains; track d.name) {
+        <div class="domain" role="listitem" [class.is-open]="d.open">
+          <h3>{{ d.name }}</h3>
+          <span class="pill" [class.pill-on]="d.open">{{ d.state }}</span>
+          <p>{{ d.body }}</p>
+          @if (d.link) {
+            <a [routerLink]="d.link" class="text-link">تفاصيل حل المتاجر</a>
+          } @else if (d.state === 'عند الطلب') {
+            <a routerLink="/book-demo" class="text-link">كلمنا عن الشغل ده</a>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section" id="demo" aria-labelledby="demo-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="demo-h" class="h2">جرّب: أوردر جديد بيتأكد على واتساب</h2>
+      <p>العميل طلب من دقيقة. الـ agent بعتله التأكيد. اختار العميل هيرد بإيه، وشوف الـ agent بيتصرف إزاي والحالة بتتغير في المتجر.</p>
+    </div>
+    <tn-chat-demo />
+  </div>
+</section>
+
+<section class="section section-ink" id="how" aria-labelledby="how-h">
+  <div class="wrap">
+    <h2 id="how-h" class="h2">إزاي بنشتغل</h2>
+    <ol class="steps">
+      @for (s of steps; track s.title; let i = $index) {
+        <li>
+          <span class="step-n" aria-hidden="true">{{ i + 1 }}</span>
+          <h3>{{ s.title }}</h3>
+          <p>{{ s.body }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="int-h">
+  <div class="wrap split">
+    <div>
+      <h2 id="int-h" class="h2">بيشتغل على قنواتك الحالية</h2>
+      <p class="muted">من غير ما تغيّر رقمك ولا منصة متجرك.</p>
+    </div>
+    <dl class="integrations">
+      <div><dt>واتساب للأعمال</dt><dd>شغال: رسايل التأكيد، والأزرار، والتذكير، والرد على الأسئلة.</dd></div>
+      <div><dt>منصة متجرك</dt><dd>بنربط الأوردرات والمنتجات بالمنصة اللي شغال عليها. قولنا هي إيه في الديمو.</dd></div>
+      <div><dt>لوحة فريقك</dt><dd>كل المحادثات والأوردرات وحالتها، وزرار يحوّل المحادثة لموظف أو يرجعها للـ agent.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="section section-alt" aria-labelledby="faq-h">
+  <div class="wrap split">
+    <h2 id="faq-h" class="h2">أسئلة بتتسأل كتير</h2>
+    <div class="faq">
+      @for (f of faq; track f.q) {
+        <details>
+          <summary>{{ f.q }}</summary>
+          <p>{{ f.a }}</p>
+        </details>
+      }
+    </div>
+  </div>
+</section>
+
+@if (latest.length) {
+  <section class="section" aria-labelledby="blog-h">
+    <div class="wrap">
+      <div class="section-head row">
+        <h2 id="blog-h" class="h2">من المدونة</h2>
+        <a routerLink="/blog" class="text-link">كل المقالات</a>
+      </div>
+      <div class="post-list">
+        @for (p of latest; track p.slug) {
+          <article class="post-item">
+            <h3><a [routerLink]="['/blog', p.slug]">{{ p.title }}</a></h3>
+            <p>{{ p.description }}</p>
+          </article>
+        }
+      </div>
+    </div>
+  </section>
+}
+
+<section class="section section-ink cta" aria-labelledby="cta-h">
+  <div class="wrap split">
+    <div>
+      <h2 id="cta-h" class="h2">شوفه شغال على أوردرات شبه أوردراتك</h2>
+      <p class="lede-sm">في الديمو بنوريك الـ agent على متجر تجريبي فيه منتجات شبه منتجاتك، ونحسب معاك الوقت اللي فريقك هيوفره.</p>
+    </div>
+    <div class="form-card"><tn-lead-form source="home-cta" /></div>
+  </div>
+</section>

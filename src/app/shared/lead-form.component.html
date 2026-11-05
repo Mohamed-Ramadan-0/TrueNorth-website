@@ -1,0 +1,53 @@
+@if (state() === 'sent') {
+  <div class="form-done" role="status">
+    <h3>وصلنا طلبك</h3>
+    <p>هنكلمك على واتساب خلال يوم عمل علشان نحدد ميعاد الديمو، ونجهزه على منتجات شبه منتجاتك.</p>
+  </div>
+} @else {
+  <form class="lead-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="field">
+      <label for="lf-name">اسمك</label>
+      <input id="lf-name" formControlName="name" autocomplete="name" [attr.aria-invalid]="invalid('name')" aria-describedby="lf-name-err" />
+      @if (invalid('name')) { <span class="err" id="lf-name-err">اكتب اسمك.</span> }
+    </div>
+    <div class="field">
+      <label for="lf-store">اسم المتجر</label>
+      <input id="lf-store" formControlName="store" autocomplete="organization" [attr.aria-invalid]="invalid('store')" aria-describedby="lf-store-err" />
+      @if (invalid('store')) { <span class="err" id="lf-store-err">اكتب اسم متجرك.</span> }
+    </div>
+    <div class="field">
+      <label for="lf-platform">المتجر شغال على</label>
+      <select id="lf-platform" formControlName="platform" [attr.aria-invalid]="invalid('platform')" aria-describedby="lf-platform-err">
+        <option value="" disabled>اختار المنصة</option>
+        @for (p of platforms; track p) { <option [value]="p">{{ p }}</option> }
+      </select>
+      @if (invalid('platform')) { <span class="err" id="lf-platform-err">اختار منصة متجرك.</span> }
+    </div>
+    <div class="field">
+      <label for="lf-orders">عدد الأوردرات في الشهر</label>
+      <select id="lf-orders" formControlName="monthlyOrders" [attr.aria-invalid]="invalid('monthlyOrders')" aria-describedby="lf-orders-err">
+        <option value="" disabled>اختار تقريبًا</option>
+        @for (r of ranges; track r) { <option [value]="r">{{ r }}</option> }
+      </select>
+      @if (invalid('monthlyOrders')) { <span class="err" id="lf-orders-err">اختار عدد تقريبي.</span> }
+    </div>
+    <div class="field field-wide">
+      <label for="lf-wa">رقم الواتساب</label>
+      <input id="lf-wa" formControlName="whatsapp" type="tel" inputmode="tel" dir="ltr" autocomplete="tel" placeholder="+20 10 0000 0000" [attr.aria-invalid]="invalid('whatsapp')" aria-describedby="lf-wa-err" />
+      @if (invalid('whatsapp')) { <span class="err" id="lf-wa-err">اكتب الرقم بكود الدولة، مثلًا ‎+966 5x xxx xxxx‎.</span> }
+    </div>
+    <div class="hp" aria-hidden="true">
+      <label for="lf-site">سيب الخانة دي فاضية</label>
+      <input id="lf-site" formControlName="website" tabindex="-1" autocomplete="off" />
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-signal" [disabled]="state() === 'sending'">
+        {{ state() === 'sending' ? 'بنبعت…' : 'احجز الديمو' }}
+      </button>
+      <p class="form-hint">ديمو 20 دقيقة أونلاين، من غير أي التزام.</p>
+    </div>
+    @if (state() === 'error') {
+      <p class="err" role="alert">الطلب موصلش. اتأكد من الإنترنت وجرب تاني، أو ابعتلنا على hello&#64;truenorth.ai.</p>
+    }
+  </form>
+}

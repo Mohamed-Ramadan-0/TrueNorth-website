@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>مدونة TrueNorth</title>
+<link>https://truenorth.ai/blog</link>
+<description>مقالات عملية لأصحاب المتاجر الإلكترونية</description>
+<language>ar</language>
+<atom:link href="https://truenorth.ai/rss.xml" rel="self" type="application/rss+xml"/>
+<item><title>إزاي تقلل الأوردرات الوهمية في الدفع عند الاستلام</title><link>https://truenorth.ai/blog/reduce-fake-cod-orders</link><guid>https://truenorth.ai/blog/reduce-fake-cod-orders</guid><pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate><description>الأوردر الوهمي بيكلفك شحن رايح وجاي ومخزون محجوز. دي الخطوات العملية اللي تقلله من غير ما تخسر العميل الحقيقي.</description></item>
+<item><title>الـ AI Agent والشات بوت: إيه الفرق اللي يهم صاحب المتجر؟</title><link>https://truenorth.ai/blog/ai-agent-vs-chatbot</link><guid>https://truenorth.ai/blog/ai-agent-vs-chatbot</guid><pubDate>Tue, 03 Nov 2026 00:00:00 GMT</pubDate><description>الشات بوت بيرد على الرسايل. الـ agent بيخلص الشغل. شرح بسيط من غير مصطلحات للفرق، وإمتى تحتاج كل واحد.</description></item>
+<item><title>رسالة تأكيد الأوردر على واتساب: إيه اللي لازم تتكتب فيها</title><link>https://truenorth.ai/blog/whatsapp-order-confirmation-message</link><guid>https://truenorth.ai/blog/whatsapp-order-confirmation-message</guid><pubDate>Fri, 30 Oct 2026 00:00:00 GMT</pubDate><description>رسالة التأكيد هي أول كلام بين متجرك والعميل بعد الطلب. دي العناصر اللي تخليه يرد بضغطة، وأخطاء تخليه يتجاهلها.</description></item>
+</channel>
+</rss>

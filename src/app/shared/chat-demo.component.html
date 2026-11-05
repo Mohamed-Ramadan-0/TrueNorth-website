@@ -1,0 +1,49 @@
+<div class="demo">
+  <div class="phone" role="log" aria-live="polite" aria-label="محاكاة محادثة واتساب">
+    <div class="phone-top">
+      <span class="avatar" aria-hidden="true">ن</span>
+      <div>
+        <strong>متجر نوارة</strong>
+        <small>{{ typing() ? 'بيكتب…' : 'حساب أعمال' }}</small>
+      </div>
+    </div>
+    <div class="thread">
+      @for (m of messages(); track $index) {
+        <div class="bubble" [class.out]="m.from === 'customer'">
+          <p>{{ m.text }}</p>
+          <span class="time">{{ m.time }}</span>
+          @if (m.buttons) {
+            <div class="quick">
+              @for (b of m.buttons; track b) { <span>{{ b }}</span> }
+            </div>
+          }
+        </div>
+      }
+      @if (typing()) {
+        <div class="bubble typing" aria-label="الـ agent بيكتب"><i></i><i></i><i></i></div>
+      }
+    </div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-q" id="scenario-label">اختار رد العميل:</p>
+    <div class="choices" role="group" aria-labelledby="scenario-label">
+      @for (s of scenarios; track s.id) {
+        <button type="button" class="choice" [class.on]="active()?.id === s.id" [disabled]="busy()" (click)="play(s)">{{ s.label }}</button>
+      }
+    </div>
+
+    <div class="order" aria-live="polite">
+      <div class="order-row"><span>أوردر</span><strong>#1042</strong></div>
+      <div class="order-row">
+        <span>الحالة في المتجر</span>
+        <strong class="status" [attr.data-tone]="active()?.tone ?? 'wait'">{{ active()?.status ?? 'مستني تأكيد' }}</strong>
+      </div>
+      <p class="order-note">{{ active()?.note ?? 'الرسالة اتبعتت بعد دقيقة من الطلب.' }}</p>
+    </div>
+    @if (active()) {
+      <button type="button" class="link-btn" (click)="reset()">ابدأ من الأول</button>
+    }
+    <p class="disclaimer">محاكاة على متجر تجريبي. الـ agent الحقيقي بيشتغل بنفس المنطق على رقم واتساب متجرك.</p>
+  </div>
+</div>
