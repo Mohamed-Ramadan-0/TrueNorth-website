@@ -1,6 +1,7 @@
-// Compiles content/blog/*.md into a typed module the app imports, and writes
-// sitemap.xml and robots.txt into public/. Runs before `ng serve` and `ng build`.
-import { readdirSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+// Compiles content/blog/{en,ar}/*.md into a typed module the app imports, and writes
+// sitemap.xml (with hreflang alternates), RSS feeds and robots.txt into public/.
+// Runs before `ng serve` and `ng build`.
+import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, basename } from 'node:path';
 import matter from 'gray-matter';
 import { marked } from 'marked';
@@ -8,39 +9,43 @@ import { marked } from 'marked';
 const root = new URL('..', import.meta.url).pathname;
 const siteTs = readFileSync(join(root, 'src/app/core/site.ts'), 'utf8');
 const SITE_URL = siteTs.match(/url:\s*'([^']+)'/)[1].replace(/\/$/, '');
-
-const dir = join(root, 'content/blog');
+const LANGS = ['en', 'ar'];
 const required = ['title', 'description', 'date', 'author'];
+const iso = (d) => new Date(d).toISOString().slice(0, 10);
+const localize = (path, lang) => (lang === 'en' ? path : path === '/' ? '/ar' : `/ar${path}`);
 
-const posts = readdirSync(dir)
-  .filter((f) => f.endsWith('.md'))
-  .map((file) => {
+const posts = [];
+for (const lang of LANGS) {
+  const dir = join(root, 'content/blog', lang);
+  if (!existsSync(dir)) continue;
+  for (const file of readdirSync(dir).filter((f) => f.endsWith('.md'))) {
     const { data, content } = matter(readFileSync(join(dir, file), 'utf8'));
-    for (const key of required) {
-      if (!data[key]) throw new Error(`${file}: missing front-matter field "${key}"`);
-    }
-    if (data.draft) return null;
+    for (const key of required) if (!data[key]) throw new Error(`${lang}/${file}: missing front-matter "${key}"`);
+    if (data.draft) continue;
+    const slug = data.slug || basename(file, '.md');
     const words = content.trim().split(/\s+/).length;
-    const date = new Date(data.date).toISOString().slice(0, 10);
-    return {
-      slug: data.slug || basename(file, '.md'),
+    posts.push({
+      slug,
+      lang,
+      key: String(data.key || slug),
       title: String(data.title),
       description: String(data.description),
-      date,
-      updated: data.updated ? new Date(data.updated).toISOString().slice(0, 10) : date,
+      date: iso(data.date),
+      updated: iso(data.updated || data.date),
       author: String(data.author),
       tags: data.tags || [],
-      readingMinutes: Math.max(1, Math.round(words / 180)),
+      readingMinutes: Math.max(1, Math.round(words / (lang === 'ar' ? 180 : 220))),
       html: marked.parse(content, { gfm: true }),
-    };
-  })
-  .filter(Boolean)
-  .sort((a, b) => b.date.localeCompare(a.date));
+    });
+  }
+}
+posts.sort((a, b) => b.date.localeCompare(a.date));
 
-const slugs = new Set();
+const seen = new Set();
 for (const p of posts) {
-  if (slugs.has(p.slug)) throw new Error(`Duplicate blog slug "${p.slug}"`);
-  slugs.add(p.slug);
+  const id = `${p.lang}/${p.slug}`;
+  if (seen.has(id)) throw new Error(`Duplicate blog slug "${id}"`);
+  seen.add(id);
 }
 
 writeFileSync(
@@ -50,46 +55,56 @@ writeFileSync(
     `export const POSTS: Post[] = ${JSON.stringify(posts, null, 2)};\n`,
 );
 
+// Sitemap: every page in both languages, linked to each other with hreflang.
 const today = new Date().toISOString().slice(0, 10);
+const solutionSlugs = [...readFileSync(join(root, 'src/app/content/solutions.ts'), 'utf8').matchAll(/slug: '([^']+)'/g)].map((m) => m[1]);
 const pages = [
-  { loc: '/', lastmod: today, priority: '1.0' },
-  { loc: '/solutions/ecommerce', lastmod: today, priority: '0.9' },
-  { loc: '/book-demo', lastmod: today, priority: '0.8' },
-  { loc: '/blog', lastmod: posts[0]?.updated || today, priority: '0.7' },
-  ...posts.map((p) => ({ loc: `/blog/${p.slug}`, lastmod: p.updated, priority: '0.6' })),
-];
+  ['/', '1.0'], ['/solutions', '0.9'], ...[...new Set(solutionSlugs)].map((s) => [`/solutions/${s}`, '0.8']),
+  ['/platform', '0.8'], ['/company', '0.7'], ['/contact', '0.7'], ['/blog', '0.7'],
+].map(([path, priority]) => ({ priority, lastmod: today, versions: Object.fromEntries(LANGS.map((l) => [l, path])) }));
+const groups = new Map();
+for (const p of posts) {
+  const g = groups.get(p.key) || { priority: '0.6', lastmod: p.updated, versions: {} };
+  g.versions[p.lang] = `/blog/${p.slug}`;
+  if (p.updated > g.lastmod) g.lastmod = p.updated;
+  groups.set(p.key, g);
+}
+pages.push(...groups.values());
+
+const url = (path, lang) => `${SITE_URL}${encodeURI(localize(path, lang))}`;
+const entries = pages.flatMap((pg) =>
+  Object.entries(pg.versions).map(([lang, path]) => {
+    const alts = Object.entries(pg.versions)
+      .map(([l, p]) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${url(p, l)}"/>`)
+      .concat(pg.versions.en ? [`    <xhtml:link rel="alternate" hreflang="x-default" href="${url(pg.versions.en, 'en')}"/>`] : [])
+      .join('\n');
+    return `  <url>\n    <loc>${url(path, lang)}</loc>\n    <lastmod>${pg.lastmod}</lastmod>\n    <priority>${pg.priority}</priority>\n${alts}\n  </url>`;
+  }),
+);
 mkdirSync(join(root, 'public'), { recursive: true });
 writeFileSync(
   join(root, 'public/sitemap.xml'),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-    pages
-      .map(
-        (p) =>
-          `  <url><loc>${SITE_URL}${encodeURI(p.loc)}</loc><lastmod>${p.lastmod}</lastmod><priority>${p.priority}</priority></url>`,
-      )
-      .join('\n') +
-    `\n</urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${entries.join('\n')}\n</urlset>\n`,
 );
-writeFileSync(
-  join(root, 'public/robots.txt'),
-  `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`,
-);
+writeFileSync(join(root, 'public/robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 
-console.log(`content: ${posts.length} posts, ${pages.length} sitemap urls`);
-
-// RSS feed for the blog.
+// RSS: one feed per language.
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-writeFileSync(
-  join(root, 'public/rss.xml'),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n<channel>\n` +
-    `<title>مدونة TrueNorth</title>\n<link>${SITE_URL}/blog</link>\n<description>مقالات عملية لأصحاب المتاجر الإلكترونية</description>\n<language>ar</language>\n` +
-    `<atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml"/>\n` +
-    posts
-      .map(
-        (p) =>
-          `<item><title>${esc(p.title)}</title><link>${SITE_URL}/blog/${p.slug}</link><guid>${SITE_URL}/blog/${p.slug}</guid>` +
-          `<pubDate>${new Date(p.date).toUTCString()}</pubDate><description>${esc(p.description)}</description></item>`,
-      )
-      .join('\n') +
-    `\n</channel>\n</rss>\n`,
-);
+const feeds = { en: ['TrueNorth Insights', 'rss.xml'], ar: ['مدونة TrueNorth', 'rss-ar.xml'] };
+for (const lang of LANGS) {
+  const [title, file] = feeds[lang];
+  const items = posts
+    .filter((p) => p.lang === lang)
+    .map((p) => {
+      const link = url(`/blog/${p.slug}`, lang);
+      return `<item><title>${esc(p.title)}</title><link>${link}</link><guid>${link}</guid><pubDate>${new Date(p.date).toUTCString()}</pubDate><description>${esc(p.description)}</description></item>`;
+    })
+    .join('\n');
+  writeFileSync(
+    join(root, 'public', file),
+    `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n<channel>\n<title>${esc(title)}</title>\n<link>${url('/blog', lang)}</link>\n` +
+      `<description>${esc(title)}</description>\n<language>${lang}</language>\n<atom:link href="${SITE_URL}/${file}" rel="self" type="application/rss+xml"/>\n${items}\n</channel>\n</rss>\n`,
+  );
+}
+
+console.log(`content: ${posts.length} posts, ${entries.length} sitemap urls`);

@@ -1,29 +1,33 @@
-import { ChangeDetectionStrategy, Component, PLATFORM_ID, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, PLATFORM_ID, RESPONSE_INIT, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { isPlatformServer } from '@angular/common';
-import { RESPONSE_INIT } from '@angular/core';
 import { SeoService } from '../../core/seo.service';
+import { LangService } from '../../core/lang.service';
 
 @Component({
   selector: 'tn-not-found',
   imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+    @let t = i18n.t().notFound;
     <section class="page-hero page-hero-tight">
       <div class="wrap">
-        <h1 class="h1">الصفحة دي مش موجودة</h1>
-        <p class="lede">ممكن الرابط اتغير أو فيه حرف غلط. ابدأ من الرئيسية أو شوف المدونة.</p>
+        <h1 class="h1">{{ t.title }}</h1>
+        <p class="lede">{{ t.lede }}</p>
         <div class="actions-row">
-          <a routerLink="/" class="btn btn-signal">الصفحة الرئيسية</a>
-          <a routerLink="/blog" class="btn btn-outline">المدونة</a>
+          <a [routerLink]="i18n.link('/')" class="btn btn-signal">{{ t.home }}</a>
+          <a [routerLink]="i18n.link('/blog')" class="btn btn-outline">{{ t.blog }}</a>
         </div>
       </div>
     </section>
   `,
 })
 export class NotFoundComponent {
+  readonly i18n = inject(LangService);
+
   constructor() {
-    inject(SeoService).set({ title: 'الصفحة مش موجودة', description: 'الصفحة اللي بتدور عليها مش موجودة.', path: '/404', noindex: true });
+    const t = this.i18n.t().notFound;
+    inject(SeoService).set({ title: t.seoTitle, description: t.lede, path: '/404', lang: this.i18n.lang(), noindex: true });
     const init = inject(RESPONSE_INIT, { optional: true });
     if (init && isPlatformServer(inject(PLATFORM_ID))) init.status = 404;
   }

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-<title>مدونة TrueNorth</title>
+<title>TrueNorth Insights</title>
 <link>https://truenorth.ai/blog</link>
-<description>مقالات عملية لأصحاب المتاجر الإلكترونية</description>
-<language>ar</language>
+<description>TrueNorth Insights</description>
+<language>en</language>
 <atom:link href="https://truenorth.ai/rss.xml" rel="self" type="application/rss+xml"/>
-<item><title>إزاي تقلل الأوردرات الوهمية في الدفع عند الاستلام</title><link>https://truenorth.ai/blog/reduce-fake-cod-orders</link><guid>https://truenorth.ai/blog/reduce-fake-cod-orders</guid><pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate><description>الأوردر الوهمي بيكلفك شحن رايح وجاي ومخزون محجوز. دي الخطوات العملية اللي تقلله من غير ما تخسر العميل الحقيقي.</description></item>
-<item><title>الـ AI Agent والشات بوت: إيه الفرق اللي يهم صاحب المتجر؟</title><link>https://truenorth.ai/blog/ai-agent-vs-chatbot</link><guid>https://truenorth.ai/blog/ai-agent-vs-chatbot</guid><pubDate>Tue, 03 Nov 2026 00:00:00 GMT</pubDate><description>الشات بوت بيرد على الرسايل. الـ agent بيخلص الشغل. شرح بسيط من غير مصطلحات للفرق، وإمتى تحتاج كل واحد.</description></item>
-<item><title>رسالة تأكيد الأوردر على واتساب: إيه اللي لازم تتكتب فيها</title><link>https://truenorth.ai/blog/whatsapp-order-confirmation-message</link><guid>https://truenorth.ai/blog/whatsapp-order-confirmation-message</guid><pubDate>Fri, 30 Oct 2026 00:00:00 GMT</pubDate><description>رسالة التأكيد هي أول كلام بين متجرك والعميل بعد الطلب. دي العناصر اللي تخليه يرد بضغطة، وأخطاء تخليه يتجاهلها.</description></item>
+<item><title>How to tell whether an AI agent is actually working</title><link>https://truenorth.ai/blog/measuring-an-ai-agent</link><guid>https://truenorth.ai/blog/measuring-an-ai-agent</guid><pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate><description>Before you deploy an agent, decide how you will judge it. A simple before-and-after method, and the numbers worth tracking.</description></item>
+<item><title>Five guardrails every customer-facing AI agent needs</title><link>https://truenorth.ai/blog/guardrails-for-customer-facing-agents</link><guid>https://truenorth.ai/blog/guardrails-for-customer-facing-agents</guid><pubDate>Wed, 04 Nov 2026 00:00:00 GMT</pubDate><description>An agent that talks to your customers can act in your systems. These are the limits we build into every agent before it goes live.</description></item>
+<item><title>AI agents vs chatbots: the difference that matters to a business</title><link>https://truenorth.ai/blog/ai-agents-vs-chatbots</link><guid>https://truenorth.ai/blog/ai-agents-vs-chatbots</guid><pubDate>Tue, 03 Nov 2026 00:00:00 GMT</pubDate><description>A chatbot answers messages. An agent finishes the job. A plain-language guide to the difference, and when you need each.</description></item>
 </channel>
 </rss>

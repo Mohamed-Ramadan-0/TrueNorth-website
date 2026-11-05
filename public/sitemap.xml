@@ -1,10 +1,205 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://truenorth.ai/</loc><lastmod>2026-11-05</lastmod><priority>1.0</priority></url>
-  <url><loc>https://truenorth.ai/solutions/ecommerce</loc><lastmod>2026-11-05</lastmod><priority>0.9</priority></url>
-  <url><loc>https://truenorth.ai/book-demo</loc><lastmod>2026-11-05</lastmod><priority>0.8</priority></url>
-  <url><loc>https://truenorth.ai/blog</loc><lastmod>2026-11-05</lastmod><priority>0.7</priority></url>
-  <url><loc>https://truenorth.ai/blog/reduce-fake-cod-orders</loc><lastmod>2026-11-05</lastmod><priority>0.6</priority></url>
-  <url><loc>https://truenorth.ai/blog/ai-agent-vs-chatbot</loc><lastmod>2026-11-03</lastmod><priority>0.6</priority></url>
-  <url><loc>https://truenorth.ai/blog/whatsapp-order-confirmation-message</loc><lastmod>2026-10-30</lastmod><priority>0.6</priority></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://truenorth.ai/</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/ar</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/solutions</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/solutions"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/solutions"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/solutions"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/ar/solutions</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/solutions"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/solutions"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/solutions"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/solutions/ecommerce</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/solutions/ecommerce"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/solutions/ecommerce"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/solutions/ecommerce"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/ar/solutions/ecommerce</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/solutions/ecommerce"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/solutions/ecommerce"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/solutions/ecommerce"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/solutions/sales</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/solutions/sales"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/solutions/sales"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/solutions/sales"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/ar/solutions/sales</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/solutions/sales"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/solutions/sales"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/solutions/sales"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/solutions/real-estate</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/solutions/real-estate"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/solutions/real-estate"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/solutions/real-estate"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/ar/solutions/real-estate</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/solutions/real-estate"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/solutions/real-estate"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/solutions/real-estate"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/solutions/custom</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/solutions/custom"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/solutions/custom"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/solutions/custom"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/ar/solutions/custom</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/solutions/custom"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/solutions/custom"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/solutions/custom"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/platform</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/platform"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/platform"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/platform"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/ar/platform</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/platform"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/platform"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/platform"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/company</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/company"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/company"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/company"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/ar/company</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/company"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/company"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/company"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/contact</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/contact"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/contact"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/ar/contact</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/contact"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/contact"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/blog</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/blog"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/blog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/blog"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/ar/blog</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/blog"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/blog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/blog"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/blog/measuring-an-ai-agent</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/blog/measuring-an-ai-agent"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/blog/measuring-an-ai-agent"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/ar/blog/reduce-fake-cod-orders</loc>
+    <lastmod>2026-11-05</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/blog/reduce-fake-cod-orders"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/blog/guardrails-for-customer-facing-agents</loc>
+    <lastmod>2026-11-04</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/blog/guardrails-for-customer-facing-agents"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/blog/guardrails-for-customer-facing-agents"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/blog/ai-agents-vs-chatbots</loc>
+    <lastmod>2026-11-03</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/blog/ai-agents-vs-chatbots"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/blog/ai-agent-vs-chatbot"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/blog/ai-agents-vs-chatbots"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/ar/blog/ai-agent-vs-chatbot</loc>
+    <lastmod>2026-11-03</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://truenorth.ai/blog/ai-agents-vs-chatbots"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/blog/ai-agent-vs-chatbot"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://truenorth.ai/blog/ai-agents-vs-chatbots"/>
+  </url>
+  <url>
+    <loc>https://truenorth.ai/ar/blog/whatsapp-order-confirmation-message</loc>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://truenorth.ai/ar/blog/whatsapp-order-confirmation-message"/>
+  </url>
 </urlset>

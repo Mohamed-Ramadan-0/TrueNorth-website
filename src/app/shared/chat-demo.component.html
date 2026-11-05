@@ -1,10 +1,11 @@
+@let t = d();
 <div class="demo">
-  <div class="phone" role="log" aria-live="polite" aria-label="محاكاة محادثة واتساب">
+  <div class="phone" role="log" aria-live="polite" [attr.aria-label]="t.log">
     <div class="phone-top">
-      <span class="avatar" aria-hidden="true">ن</span>
+      <span class="avatar" aria-hidden="true">{{ t.store.charAt(0) }}</span>
       <div>
-        <strong>متجر نوارة</strong>
-        <small>{{ typing() ? 'بيكتب…' : 'حساب أعمال' }}</small>
+        <strong>{{ t.store }}</strong>
+        <small>{{ typing() ? t.typing : t.account }}</small>
       </div>
     </div>
     <div class="thread">
@@ -20,30 +21,30 @@
         </div>
       }
       @if (typing()) {
-        <div class="bubble typing" aria-label="الـ agent بيكتب"><i></i><i></i><i></i></div>
+        <div class="bubble typing" [attr.aria-label]="t.typingAria"><i></i><i></i><i></i></div>
       }
     </div>
   </div>
 
   <div class="panel">
-    <p class="panel-q" id="scenario-label">اختار رد العميل:</p>
+    <p class="panel-q" id="scenario-label">{{ t.question }}</p>
     <div class="choices" role="group" aria-labelledby="scenario-label">
-      @for (s of scenarios; track s.id) {
-        <button type="button" class="choice" [class.on]="active()?.id === s.id" [disabled]="busy()" (click)="play(s)">{{ s.label }}</button>
+      @for (s of scenarios(); track s.id) {
+        <button type="button" class="choice" [class.on]="active()?.id === s.id" [attr.aria-pressed]="active()?.id === s.id" [disabled]="busy()" (click)="play(s)">{{ s.label }}</button>
       }
     </div>
 
     <div class="order" aria-live="polite">
-      <div class="order-row"><span>أوردر</span><strong>#1042</strong></div>
+      <div class="order-row"><span>{{ t.order }}</span><strong>#1042</strong></div>
       <div class="order-row">
-        <span>الحالة في المتجر</span>
-        <strong class="status" [attr.data-tone]="active()?.tone ?? 'wait'">{{ active()?.status ?? 'مستني تأكيد' }}</strong>
+        <span>{{ t.status }}</span>
+        <strong class="status" [attr.data-tone]="active()?.tone ?? 'wait'">{{ active()?.status ?? t.waiting }}</strong>
       </div>
-      <p class="order-note">{{ active()?.note ?? 'الرسالة اتبعتت بعد دقيقة من الطلب.' }}</p>
+      <p class="order-note">{{ active()?.note ?? t.sentNote }}</p>
     </div>
     @if (active()) {
-      <button type="button" class="link-btn" (click)="reset()">ابدأ من الأول</button>
+      <button type="button" class="link-btn" (click)="reset()">{{ t.restart }}</button>
     }
-    <p class="disclaimer">محاكاة على متجر تجريبي. الـ agent الحقيقي بيشتغل بنفس المنطق على رقم واتساب متجرك.</p>
+    <p class="disclaimer">{{ t.disclaimer }}</p>
   </div>
 </div>

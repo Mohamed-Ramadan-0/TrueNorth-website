@@ -1,18 +1,20 @@
 @if (post(); as p) {
+  @let t = i18n.t().blog;
   <article class="post">
     <header class="page-hero page-hero-tight">
       <div class="wrap narrow">
-        <nav class="crumbs" aria-label="مسار الصفحة"><a routerLink="/">الرئيسية</a><span aria-hidden="true">/</span><a routerLink="/blog">المدونة</a></nav>
+        <nav class="crumbs" aria-label="breadcrumb"><a [routerLink]="i18n.link('/')">{{ t.home }}</a><span aria-hidden="true">/</span><a [routerLink]="i18n.link('/blog')">{{ t.title }}</a></nav>
         <h1 class="h1 post-title">{{ p.title }}</h1>
         <p class="lede">{{ p.description }}</p>
-        <p class="meta"><time [attr.datetime]="p.date">{{ p.date | arDate }}</time>، {{ p.readingMinutes }} دقايق قراية، {{ p.author }}</p>
+        @let sep = p.lang === 'ar' ? '، ' : ', ';
+        <p class="meta"><time [attr.datetime]="p.date">{{ p.date | siteDate: p.lang }}</time>{{ sep }}{{ p.readingMinutes }} {{ t.minutes }}{{ sep }}{{ t.by ? t.by + ' ' : '' }}{{ p.author }}</p>
       </div>
     </header>
     <div class="wrap narrow">
       <div class="prose" [innerHTML]="body()"></div>
       @if (p.tags.length) {
-        <ul class="tags" aria-label="المواضيع">
-          @for (t of p.tags; track t) { <li>{{ t }}</li> }
+        <ul class="tags" [attr.aria-label]="t.topics">
+          @for (tag of p.tags; track tag) { <li>{{ tag }}</li> }
         </ul>
       }
     </div>
@@ -21,10 +23,10 @@
   @if (others().length) {
     <section class="section section-alt" aria-labelledby="more-h">
       <div class="wrap narrow">
-        <h2 id="more-h" class="h2">اقرا كمان</h2>
+        <h2 id="more-h" class="h2">{{ t.more }}</h2>
         <ul class="blog-index compact">
           @for (o of others(); track o.slug) {
-            <li><article><div><h3><a [routerLink]="['/blog', o.slug]">{{ o.title }}</a></h3><p>{{ o.description }}</p></div></article></li>
+            <li><article><div><h3><a [routerLink]="i18n.link('/blog/' + o.slug)">{{ o.title }}</a></h3><p>{{ o.description }}</p></div></article></li>
           }
         </ul>
       </div>

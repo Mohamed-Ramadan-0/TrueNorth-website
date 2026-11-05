@@ -2,11 +2,17 @@ import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { SITE, absoluteUrl } from './site';
+import { COPY } from '../content/copy';
+import { Lang, localize } from './lang.service';
 
 export interface PageSeo {
   title: string;
   description: string;
+  /** Path without the language prefix, e.g. "/platform". */
   path: string;
+  lang: Lang;
+  /** Language versions of this page (base paths). Defaults to the same path in every language. */
+  alternates?: Partial<Record<Lang, string>>;
   type?: 'website' | 'article';
   image?: string;
   publishedTime?: string;
@@ -27,8 +33,13 @@ export class SeoService {
   private readonly doc = inject(DOCUMENT);
 
   set(page: PageSeo): void {
-    const url = absoluteUrl(page.path);
-    const image = absoluteUrl(page.image ?? SITE.ogImage);
+    const localPath = localize(page.path, page.lang);
+    const url = absoluteUrl(localPath);
+    const copy = COPY[page.lang];
+    const html = this.doc.documentElement;
+    html.setAttribute('lang', page.lang);
+    html.setAttribute('dir', page.lang === 'ar' ? 'rtl' : 'ltr');
+    const image = absoluteUrl(page.image ?? `/og/${page.lang}.png`);
     const fullTitle = page.path === '/' ? page.title : `${page.title} | ${SITE.name}`;
 
     this.title.setTitle(fullTitle);
@@ -41,7 +52,7 @@ export class SeoService {
       'og:type': page.type ?? 'website',
       'og:image': image,
       'og:site_name': SITE.name,
-      'og:locale': SITE.locale,
+      'og:locale': copy.meta.locale,
       'twitter:card': 'summary_large_image',
       'twitter:title': fullTitle,
       'twitter:description': page.description,
@@ -60,7 +71,8 @@ export class SeoService {
     }
 
     this.setLink('canonical', url);
-    this.setJsonLd([...baseSchema(), ...(page.schema ?? [])]);
+    this.setAlternates(page.noindex ? {} : (page.alternates ?? { en: page.path, ar: page.path }));
+    this.setJsonLd([...baseSchema(page.lang), ...(page.schema ?? [])]);
   }
 
   private setLink(rel: string, href: string): void {
@@ -71,6 +83,19 @@ export class SeoService {
       this.doc.head.appendChild(link);
     }
     link.href = href;
+  }
+
+  private setAlternates(alts: Partial<Record<Lang, string>>): void {
+    this.doc.head.querySelectorAll('link[rel="alternate"][hreflang]').forEach((l) => l.remove());
+    const add = (hreflang: string, href: string) => {
+      const link = this.doc.createElement('link');
+      link.rel = 'alternate';
+      link.setAttribute('hreflang', hreflang);
+      link.href = href;
+      this.doc.head.appendChild(link);
+    };
+    for (const [lang, path] of Object.entries(alts) as [Lang, string][]) add(lang, absoluteUrl(localize(path, lang)));
+    if (alts.en) add('x-default', absoluteUrl(alts.en));
   }
 
   private setJsonLd(graph: Record<string, unknown>[]): void {
@@ -86,24 +111,25 @@ export class SeoService {
   }
 }
 
-function baseSchema(): Record<string, unknown>[] {
+function baseSchema(lang: Lang): Record<string, unknown>[] {
   return [
     {
       '@type': 'Organization',
       '@id': absoluteUrl('/#org'),
       name: SITE.name,
       alternateName: SITE.nameAr,
+      slogan: COPY[lang].footer.tagline,
       url: SITE.url,
       logo: absoluteUrl('/icon-512.png'),
       email: SITE.email,
-      description: SITE.description,
+      description: COPY[lang].meta.siteDescription,
     },
     {
       '@type': 'WebSite',
       '@id': absoluteUrl('/#website'),
       url: SITE.url,
       name: SITE.name,
-      inLanguage: 'ar',
+      inLanguage: ['en', 'ar'],
       publisher: { '@id': absoluteUrl('/#org') },
     },
   ];

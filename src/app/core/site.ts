@@ -1,15 +1,11 @@
 /**
- * Site-wide settings. The domain is not final yet: change SITE_URL once it is,
- * and run `npm run content` so the sitemap and robots.txt pick it up.
+ * Site-wide settings. The domain is not final yet: change `url` once it is,
+ * add the domain to security.allowedHosts in angular.json, and rebuild.
  */
 export const SITE = {
   url: 'https://truenorth.ai',
   name: 'TrueNorth',
   nameAr: 'ترو نورث',
-  tagline: 'فريق رقمي بيشتغل جوه بزنسك 24 ساعة',
-  description:
-    'TrueNorth بتبني AI agents بترد على عملائك على واتساب، وتأكد أوردراتك، وتحوّل لفريقك اللي محتاج إنسان. أوردرات وهمية أقل، ورد في ثواني.',
-  locale: 'ar_EG',
   ogImage: '/og/default.png',
   email: 'hello@truenorth.ai',
 } as const;

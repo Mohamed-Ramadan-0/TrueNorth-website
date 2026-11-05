@@ -32,14 +32,18 @@ app.post('/api/leads', express.json({ limit: '10kb' }), async (req, res) => {
   }
   const lead = {
     name: str(b.name, 80),
-    store: str(b.store, 120),
-    platform: str(b.platform, 40),
-    monthlyOrders: str(b.monthlyOrders, 40),
+    company: str(b.company, 120),
+    email: str(b.email, 160),
     whatsapp: str(b.whatsapp, 20),
-    source: str(b.source, 40),
+    industry: str(b.industry, 60),
+    need: str(b.need, 1000),
+    source: str(b.source, 60),
+    lang: b.lang === 'ar' ? 'ar' : 'en',
     at: new Date().toISOString(),
   };
-  if (!lead.name || !lead.store || !lead.platform || !lead.monthlyOrders || !/^\+?[0-9\s-]{9,18}$/.test(lead.whatsapp)) {
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email);
+  const phoneOk = !lead.whatsapp || /^\+?[0-9\s-]{9,18}$/.test(lead.whatsapp);
+  if (!lead.name || !lead.company || !lead.industry || !emailOk || !phoneOk) {
     res.status(400).json({ error: 'missing_or_invalid_fields' });
     return;
   }

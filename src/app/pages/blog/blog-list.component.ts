@@ -1,70 +1,76 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService, breadcrumbs } from '../../core/seo.service';
+import { LangService } from '../../core/lang.service';
 import { SITE, absoluteUrl } from '../../core/site';
-import { POSTS } from '../../content/posts.generated';
-import { ArabicDatePipe } from './arabic-date.pipe';
+import { postsFor } from '../../content/posts';
+import { SiteDatePipe } from './site-date.pipe';
 
 @Component({
   selector: 'tn-blog-list',
-  imports: [RouterLink, ArabicDatePipe],
+  imports: [RouterLink, SiteDatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+    @let t = i18n.t().blog;
     <section class="page-hero page-hero-tight">
       <div class="wrap">
-        <h1 class="h1">المدونة</h1>
-        <p class="lede">كلام عملي لأصحاب المتاجر: إزاي تقلل المرتجعات، وترد أسرع، وتوفر وقت فريقك.</p>
+        <h1 class="h1">{{ t.title }}</h1>
+        <p class="lede">{{ t.lede }}</p>
       </div>
     </section>
-    <section class="section section-flush">
+    <section class="section">
       <div class="wrap">
-        @if (posts.length) {
+        @if (posts().length) {
           <ul class="blog-index">
-            @for (p of posts; track p.slug) {
+            @for (p of posts(); track p.slug) {
               <li>
                 <article>
-                  <time [attr.datetime]="p.date">{{ p.date | arDate }}</time>
+                  <time [attr.datetime]="p.date">{{ p.date | siteDate: i18n.lang() }}</time>
                   <div>
-                    <h2><a [routerLink]="['/blog', p.slug]">{{ p.title }}</a></h2>
+                    <h2><a [routerLink]="i18n.link('/blog/' + p.slug)">{{ p.title }}</a></h2>
                     <p>{{ p.description }}</p>
-                    <span class="meta">{{ p.readingMinutes }} دقايق قراية</span>
+                    <span class="meta">{{ p.readingMinutes }} {{ t.minutes }}</span>
                   </div>
                 </article>
               </li>
             }
           </ul>
         } @else {
-          <p class="lede">أول مقالة جاية قريب.</p>
+          <p class="lede">{{ t.empty }}</p>
         }
       </div>
     </section>
   `,
 })
 export class BlogListComponent {
-  readonly posts = POSTS;
+  readonly i18n = inject(LangService);
+  readonly posts = computed(() => postsFor(this.i18n.lang()));
 
   constructor() {
-    inject(SeoService).set({
-      title: 'المدونة',
-      description: 'مقالات عملية لأصحاب المتاجر الإلكترونية عن تأكيد الأوردرات، والدفع عند الاستلام، وخدمة العملاء على واتساب، والـ AI agents.',
-      path: '/blog',
-      schema: [
-        {
-          '@type': 'Blog',
-          '@id': absoluteUrl('/blog#blog'),
-          name: `مدونة ${SITE.name}`,
-          url: absoluteUrl('/blog'),
-          inLanguage: 'ar',
-          publisher: { '@id': absoluteUrl('/#org') },
-          blogPost: POSTS.map((p) => ({
-            '@type': 'BlogPosting',
-            headline: p.title,
-            url: absoluteUrl(`/blog/${p.slug}`),
-            datePublished: p.date,
-          })),
-        },
-        breadcrumbs([{ name: 'الرئيسية', path: '/' }, { name: 'المدونة', path: '/blog' }]),
-      ],
+    const seo = inject(SeoService);
+    effect(() => {
+      const lang = this.i18n.lang();
+      const t = this.i18n.t().blog;
+      seo.set({
+        title: t.seoTitle,
+        description: t.seoDescription,
+        path: '/blog',
+        lang,
+        schema: [
+          {
+            '@type': 'Blog',
+            '@id': absoluteUrl(this.i18n.link('/blog') + '#blog'),
+            name: `${SITE.name} ${t.title}`,
+            url: absoluteUrl(this.i18n.link('/blog')),
+            inLanguage: lang,
+            publisher: { '@id': absoluteUrl('/#org') },
+            blogPost: this.posts().map((p) => ({
+              '@type': 'BlogPosting', headline: p.title, url: absoluteUrl(this.i18n.link(`/blog/${p.slug}`)), datePublished: p.date,
+            })),
+          },
+          breadcrumbs([{ name: t.home, path: this.i18n.link('/') }, { name: t.title, path: this.i18n.link('/blog') }]),
+        ],
+      });
     });
   }
 }

@@ -1,0 +1,79 @@
+@if (s(); as s) {
+  @let t = i18n.t().solution;
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="breadcrumb">
+        <a [routerLink]="i18n.link('/')">{{ t.home }}</a><span aria-hidden="true">/</span>
+        <a [routerLink]="i18n.link('/solutions')">{{ t.solutions }}</a><span aria-hidden="true">/</span>
+        <span>{{ s.name }}</span>
+      </nav>
+      <p class="hero-status"><span class="pill" [class.pill-on]="s.kind === 'live'">{{ s.state }}</span></p>
+      <h1 class="h1">{{ s.title }}</h1>
+      <p class="lede">{{ s.lede }}</p>
+      <a [routerLink]="i18n.link('/contact')" class="btn btn-signal">{{ t.primary }}</a>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="does-h">
+    <div class="wrap split">
+      <h2 id="does-h" class="h2">{{ s.doesTitle }}</h2>
+      @if (s.kind === 'live') {
+        <ol class="flow">
+          @for (d of s.does; track d.t; let i = $index) {
+            <li><span class="flow-n" aria-hidden="true">{{ i + 1 }}</span><div><h3>{{ d.t }}</h3><p>{{ d.b }}</p></div></li>
+          }
+        </ol>
+      } @else {
+        <dl class="ledger">
+          @for (d of s.does; track d.t) { <div><dt>{{ d.t }}</dt><dd>{{ d.b }}</dd></div> }
+        </dl>
+      }
+    </div>
+  </section>
+
+  @if (s.kind === 'live') {
+    <section class="section section-alt" aria-labelledby="demo-h">
+      <div class="wrap">
+        <div class="section-head"><h2 id="demo-h" class="h2">{{ t.demoTitle }}</h2></div>
+        <tn-chat-demo />
+      </div>
+    </section>
+  }
+
+  @if (s.measures) {
+    <section class="section" aria-labelledby="m-h">
+      <div class="wrap split">
+        <div>
+          <h2 id="m-h" class="h2">{{ s.measuresTitle }}</h2>
+          <p class="muted">{{ s.measuresIntro }}</p>
+        </div>
+        <dl class="ledger">
+          @for (m of s.measures; track m.t) { <div><dt>{{ m.t }}</dt><dd>{{ m.b }}</dd></div> }
+        </dl>
+      </div>
+    </section>
+  }
+
+  @if (s.next) {
+    <section class="section section-alt" aria-labelledby="n-h">
+      <div class="wrap split">
+        <h2 id="n-h" class="h2">{{ s.nextTitle }}</h2>
+        <dl class="ledger">
+          @for (n of s.next; track n.t) { <div><dt>{{ n.t }}</dt><dd>{{ n.b }}</dd></div> }
+        </dl>
+      </div>
+    </section>
+  }
+
+  <section class="section section-ink" aria-labelledby="cta-h">
+    <div class="wrap split">
+      <div>
+        <h2 id="cta-h" class="h2">{{ s.kind === 'next' || s.kind === 'later' ? t.earlyTitle : s.ctaTitle }}</h2>
+        <p class="lede-sm">{{ s.kind === 'next' || s.kind === 'later' ? s.ctaBody + ' ' + t.earlyBody : s.ctaBody }}</p>
+      </div>
+      <div class="form-card"><tn-lead-form [source]="'solution-' + s.slug" [industry]="industry()" /></div>
+    </div>
+  </section>
+} @else {
+  <tn-not-found />
+}

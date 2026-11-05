@@ -5,10 +5,10 @@
 .phone-top small { opacity: .8; font-size: .78rem; }
 .avatar { width: 36px; height: 36px; border-radius: 50%; background: #fff; color: #075E54; display: grid; place-items: center; font-weight: 700; }
 .thread { padding: 1rem .8rem; display: flex; flex-direction: column; gap: .55rem; flex: 1; }
-.bubble { background: #fff; color: #111b21; border-radius: 10px 0 10px 10px; padding: .55rem .7rem .35rem; max-width: 88%; align-self: flex-start; font-size: .9rem; line-height: 1.6; animation: pop .25s ease-out; }
-.bubble.out { background: #D9FDD3; align-self: flex-end; border-radius: 0 10px 10px 10px; }
+.bubble { background: #fff; color: #111b21; border-radius: 10px; border-start-start-radius: 0; padding: .55rem .7rem .35rem; max-width: 88%; align-self: flex-start; font-size: .9rem; line-height: 1.6; animation: pop .25s ease-out; }
+.bubble.out { background: #D9FDD3; align-self: flex-end; border-radius: 10px; border-start-end-radius: 0; }
 .bubble p { margin: 0; white-space: pre-line; }
-.time { display: block; text-align: left; font-size: .68rem; color: #667781; }
+.time { display: block; text-align: end; font-size: .68rem; color: #667781; }
 .quick { display: grid; gap: 1px; margin: .45rem -.7rem -.35rem; border-top: 1px solid #e9edef; }
 .quick span { text-align: center; color: #027EB5; padding: .45rem; font-weight: 600; font-size: .85rem; border-top: 1px solid #e9edef; }
 .quick span:first-child { border-top: 0; }

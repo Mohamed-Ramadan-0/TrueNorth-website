@@ -17,20 +17,32 @@ for (const size of [180, 192, 512]) {
 }
 
 await page.setViewportSize({ width: 1200, height: 630 });
-const ticks = Array.from({ length: 120 }, (_, i) => {
-  const a = (i * 3 * Math.PI) / 180, major = i % 10 === 0, r2 = major ? 180 : 188;
-  return `<line x1="${Math.sin(a) * 196}" y1="${-Math.cos(a) * 196}" x2="${Math.sin(a) * r2}" y2="${-Math.cos(a) * r2}" stroke="rgba(241,243,239,${major ? .8 : .35})" stroke-width="${major ? 1.6 : 1}"/>`;
-}).join('');
-await page.setContent(`<!doctype html><html dir="rtl"><head>
-<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;600&family=IBM+Plex+Sans+Arabic:wght@400&display=block" rel="stylesheet">
-<style>body{margin:0;width:1200px;height:630px;background:#0E1A2B;color:#F1F3EF;font-family:'Readex Pro';display:grid;grid-template-columns:1fr 470px;align-items:center;overflow:hidden}
-.c{padding:0 80px 0 20px}h1{font-size:64px;line-height:1.25;font-weight:600;margin:0 0 28px}p{font:400 26px/1.6 'IBM Plex Sans Arabic';color:rgba(241,243,239,.75);margin:0}
-.b{direction:ltr;display:flex;gap:14px;align-items:center;font-size:30px;font-weight:600;margin-bottom:44px;justify-content:flex-end}.b svg{width:44px;height:44px}</style></head><body>
-<div class="c"><div class="b">TrueNorth ${mark}</div><h1>فريق رقمي بيشتغل جوه بزنسك 24 ساعة</h1><p>AI agents بترد على عملائك وتأكد أوردراتك على واتساب</p></div>
-<svg viewBox="-210 -210 420 420" width="470" height="470" style="margin-left:30px"><circle r="196" fill="none" stroke="rgba(241,243,239,.42)"/><circle r="150" fill="none" stroke="rgba(241,243,239,.12)"/>${ticks}
-<path d="M0 -140 L13 0 L-13 0 Z" fill="#F26A1B"/><path d="M0 140 L-13 0 L13 0 Z" fill="rgba(241,243,239,.85)"/><circle r="5" fill="#0E1A2B" stroke="#F1F3EF" stroke-width="2"/></svg>
+// A field of needles aligned on north around one orange reference, as in the site's hero.
+const cols = 13, rows = 7, gap = 48, ref = { c: 9, r: 3 };
+let needles = '';
+for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+  if (r === ref.r && c === ref.c) continue;
+  needles += `<path transform="translate(${c * gap + 24} ${r * gap + 24})" d="M0 -11 L2.2 0 L0 11 L-2.2 0 Z" fill="rgba(241,243,239,.34)"/>`;
+}
+const refSvg = `<g transform="translate(${ref.c * gap + 24} ${ref.r * gap + 24})"><circle r="17" fill="none" stroke="rgba(242,106,27,.55)"/><path d="M0 -13 L3.2 0 L-3.2 0 Z" fill="#F26A1B"/><path d="M0 13 L-3.2 0 L3.2 0 Z" fill="#F1F3EF"/></g>`;
+const og = {
+  en: { dir: 'ltr', title: 'AI agents that run the work.', sub: 'AI agent systems for business' },
+  ar: { dir: 'rtl', title: 'فريق رقمي بيشتغل جوه بزنسك 24 ساعة.', sub: 'أنظمة AI agents للشركات' },
+};
+for (const [lang, o] of Object.entries(og)) {
+  await page.setContent(`<!doctype html><html dir="${o.dir}"><head>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400&display=block" rel="stylesheet">
+<style>body{margin:0;width:1200px;height:630px;background:#0E1A2B;color:#F1F3EF;font-family:'Readex Pro';position:relative;overflow:hidden}
+svg.f{position:absolute;inset:0;width:1200px;height:630px;${o.dir === 'rtl' ? 'transform:scaleX(-1);' : ''}-webkit-mask-image:linear-gradient(to right,transparent 20%,#000 70%)}
+.c{position:absolute;inset:0;padding:72px 80px;display:flex;flex-direction:column;justify-content:space-between}
+h1{font-size:${lang === 'ar' ? 60 : 70}px;line-height:${lang === 'ar' ? 1.3 : 1.08};font-weight:500;letter-spacing:${lang === 'ar' ? 0 : '-.025em'};margin:0;max-width:${lang === 'ar' ? 640 : 600}px}
+p{font:400 26px/1.5 'IBM Plex Sans Arabic';color:rgba(241,243,239,.72);margin:18px 0 0}
+.b{direction:ltr;display:flex;gap:14px;align-items:center;font-size:30px;font-weight:500;${o.dir === 'rtl' ? 'justify-content:flex-end;' : ''}}.b svg{width:44px;height:44px}</style></head><body>
+<svg class="f" viewBox="0 0 624 336" preserveAspectRatio="xMidYMid slice">${needles}${refSvg}</svg>
+<div class="c"><div class="b">${mark} TrueNorth</div><div><h1>${o.title}</h1><p>${o.sub}</p></div></div>
 </body></html>`, { waitUntil: 'networkidle' });
-await page.evaluate(() => document.fonts.ready);
-await page.screenshot({ path: `${root}public/og/default.png` });
+  await page.evaluate(() => document.fonts.ready);
+  await page.screenshot({ path: `${root}public/og/${lang}.png` });
+}
 await browser.close();
 console.log('images rendered');

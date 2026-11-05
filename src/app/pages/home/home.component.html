@@ -1,115 +1,125 @@
+@let t = copy();
 <section class="hero">
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <h1>فريق رقمي بيشتغل جوه بزنسك <span class="nowrap">24 ساعة</span></h1>
-      <p class="lede">بنبني AI agents بترد على عملائك، وتأكد أوردراتك، وتتابع الشحن، وانت مركز في النمو.</p>
-      <div class="actions">
-        <a routerLink="/book-demo" class="btn btn-signal">احجز ديمو مجاني</a>
-        <a routerLink="/" fragment="demo" class="btn btn-ghost-light">شوف الـ agent شغال</a>
-      </div>
+  <tn-needle-field [label]="t.heroFigure" />
+  <div class="wrap hero-inner">
+    <h1>{{ t.heroTitle }}</h1>
+    <p class="lede">{{ t.heroLede }}</p>
+    <div class="actions">
+      <a [routerLink]="i18n.link('/contact')" class="btn btn-signal">{{ t.heroPrimary }}</a>
+      <a [routerLink]="i18n.link('/')" fragment="demo" class="btn btn-ghost-light">{{ t.heroSecondary }}</a>
     </div>
-    <tn-dial class="hero-dial" />
   </div>
 </section>
 
-<section class="section" aria-labelledby="pain-h">
+<section class="section statement-sec">
+  <div class="wrap">
+    <p class="statement">{{ t.statement }}</p>
+  </div>
+</section>
+
+<section class="section section-flush" aria-labelledby="cap-h">
   <div class="wrap split">
-    <h2 id="pain-h" class="h2">الشغل اللي بياكل يوم فريقك</h2>
-    <ul class="pains">
-      @for (p of pains; track p.title) {
-        <li><h3>{{ p.title }}</h3><p>{{ p.body }}</p></li>
+    <div>
+      <h2 id="cap-h" class="h2">{{ t.capTitle }}</h2>
+      <p class="muted intro">{{ t.capIntro }}</p>
+    </div>
+    <dl class="ledger">
+      @for (c of t.capabilities; track c.t) {
+        <div><dt>{{ c.t }}</dt><dd>{{ c.b }}</dd></div>
       }
-    </ul>
+    </dl>
   </div>
 </section>
 
-<section class="section section-alt" aria-labelledby="domains-h">
+<section class="section section-alt" aria-labelledby="sol-h">
   <div class="wrap">
     <div class="section-head">
-      <h2 id="domains-h" class="h2">agents لكل قسم في البزنس</h2>
-      <p>بنبدأ بالمتاجر الإلكترونية، وكل مجال جديد بيتفتح لما يبقى عندنا نتايج حقيقية في اللي قبله.</p>
+      <h2 id="sol-h" class="h2">{{ t.solTitle }}</h2>
+      <p>{{ t.solIntro }}</p>
     </div>
-    <div class="domains" role="list">
-      @for (d of domains; track d.name) {
-        <div class="domain" role="listitem" [class.is-open]="d.open">
-          <h3>{{ d.name }}</h3>
-          <span class="pill" [class.pill-on]="d.open">{{ d.state }}</span>
-          <p>{{ d.body }}</p>
-          @if (d.link) {
-            <a [routerLink]="d.link" class="text-link">تفاصيل حل المتاجر</a>
-          } @else if (d.state === 'عند الطلب') {
-            <a routerLink="/book-demo" class="text-link">كلمنا عن الشغل ده</a>
-          }
-        </div>
+    <ul class="bearings">
+      @for (s of solutions(); track s.slug) {
+        <li [class.is-live]="s.kind === 'live'">
+          <a [routerLink]="i18n.link('/solutions/' + s.slug)">
+            <span class="b-name">{{ s.name }}</span>
+            <span class="pill" [class.pill-on]="s.kind === 'live'">{{ s.state }}</span>
+            <span class="b-sum">{{ s.summary }}</span>
+          </a>
+        </li>
       }
-    </div>
+    </ul>
   </div>
 </section>
 
 <section class="section" id="demo" aria-labelledby="demo-h">
   <div class="wrap">
     <div class="section-head">
-      <h2 id="demo-h" class="h2">جرّب: أوردر جديد بيتأكد على واتساب</h2>
-      <p>العميل طلب من دقيقة. الـ agent بعتله التأكيد. اختار العميل هيرد بإيه، وشوف الـ agent بيتصرف إزاي والحالة بتتغير في المتجر.</p>
+      <h2 id="demo-h" class="h2">{{ t.demoTitle }}</h2>
+      <p>{{ t.demoIntro }}</p>
     </div>
     <tn-chat-demo />
   </div>
 </section>
 
-<section class="section section-ink" id="how" aria-labelledby="how-h">
+<section class="section section-ink" aria-labelledby="pr-h">
   <div class="wrap">
-    <h2 id="how-h" class="h2">إزاي بنشتغل</h2>
+    <h2 id="pr-h" class="h2">{{ t.principlesTitle }}</h2>
+    <div class="principles">
+      @for (p of t.principles; track p.t) {
+        <div><h3>{{ p.t }}</h3><p>{{ p.b }}</p></div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="core-h">
+  <div class="wrap split">
+    <div>
+      <h2 id="core-h" class="h2">{{ t.coreTitle }}</h2>
+      <p class="muted intro">{{ t.coreIntro }}</p>
+      <a [routerLink]="i18n.link('/platform')" class="text-link">{{ t.coreLink }}</a>
+    </div>
+    <div class="core">
+      @for (c of t.core; track c.t) {
+        <div class="core-layer"><strong>{{ c.t }}</strong><span>{{ c.b }}</span></div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" aria-labelledby="proc-h">
+  <div class="wrap">
+    <h2 id="proc-h" class="h2">{{ t.processTitle }}</h2>
     <ol class="steps">
-      @for (s of steps; track s.title; let i = $index) {
-        <li>
-          <span class="step-n" aria-hidden="true">{{ i + 1 }}</span>
-          <h3>{{ s.title }}</h3>
-          <p>{{ s.body }}</p>
-        </li>
+      @for (s of t.process; track s.t; let i = $index) {
+        <li><span class="step-n" aria-hidden="true">{{ i + 1 }}</span><h3>{{ s.t }}</h3><p>{{ s.b }}</p></li>
       }
     </ol>
   </div>
 </section>
 
-<section class="section" aria-labelledby="int-h">
-  <div class="wrap split">
-    <div>
-      <h2 id="int-h" class="h2">بيشتغل على قنواتك الحالية</h2>
-      <p class="muted">من غير ما تغيّر رقمك ولا منصة متجرك.</p>
-    </div>
-    <dl class="integrations">
-      <div><dt>واتساب للأعمال</dt><dd>شغال: رسايل التأكيد، والأزرار، والتذكير، والرد على الأسئلة.</dd></div>
-      <div><dt>منصة متجرك</dt><dd>بنربط الأوردرات والمنتجات بالمنصة اللي شغال عليها. قولنا هي إيه في الديمو.</dd></div>
-      <div><dt>لوحة فريقك</dt><dd>كل المحادثات والأوردرات وحالتها، وزرار يحوّل المحادثة لموظف أو يرجعها للـ agent.</dd></div>
-    </dl>
-  </div>
-</section>
-
-<section class="section section-alt" aria-labelledby="faq-h">
-  <div class="wrap split">
-    <h2 id="faq-h" class="h2">أسئلة بتتسأل كتير</h2>
-    <div class="faq">
-      @for (f of faq; track f.q) {
-        <details>
-          <summary>{{ f.q }}</summary>
-          <p>{{ f.a }}</p>
-        </details>
+<section class="section" aria-labelledby="vis-h">
+  <div class="wrap">
+    <h2 id="vis-h" class="h2">{{ t.visionTitle }}</h2>
+    <ol class="horizon">
+      @for (v of t.vision; track v.t; let first = $first) {
+        <li [class.now]="first"><h3>{{ v.t }}</h3><p>{{ v.b }}</p></li>
       }
-    </div>
+    </ol>
   </div>
 </section>
 
-@if (latest.length) {
-  <section class="section" aria-labelledby="blog-h">
+@if (latest().length) {
+  <section class="section section-alt" aria-labelledby="blog-h">
     <div class="wrap">
       <div class="section-head row">
-        <h2 id="blog-h" class="h2">من المدونة</h2>
-        <a routerLink="/blog" class="text-link">كل المقالات</a>
+        <h2 id="blog-h" class="h2">{{ t.insightsTitle }}</h2>
+        <a [routerLink]="i18n.link('/blog')" class="text-link">{{ t.insightsAll }}</a>
       </div>
       <div class="post-list">
-        @for (p of latest; track p.slug) {
+        @for (p of latest(); track p.slug) {
           <article class="post-item">
-            <h3><a [routerLink]="['/blog', p.slug]">{{ p.title }}</a></h3>
+            <h3><a [routerLink]="i18n.link('/blog/' + p.slug)">{{ p.title }}</a></h3>
             <p>{{ p.description }}</p>
           </article>
         }
@@ -118,12 +128,23 @@
   </section>
 }
 
-<section class="section section-ink cta" aria-labelledby="cta-h">
+<section class="section" aria-labelledby="faq-h">
+  <div class="wrap split">
+    <h2 id="faq-h" class="h2">{{ t.faqTitle }}</h2>
+    <div class="faq">
+      @for (f of t.faq; track f.t) {
+        <details><summary>{{ f.t }}</summary><p>{{ f.b }}</p></details>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section section-ink" aria-labelledby="cta-h">
   <div class="wrap split">
     <div>
-      <h2 id="cta-h" class="h2">شوفه شغال على أوردرات شبه أوردراتك</h2>
-      <p class="lede-sm">في الديمو بنوريك الـ agent على متجر تجريبي فيه منتجات شبه منتجاتك، ونحسب معاك الوقت اللي فريقك هيوفره.</p>
+      <h2 id="cta-h" class="h2">{{ t.ctaTitle }}</h2>
+      <p class="lede-sm">{{ t.ctaBody }}</p>
     </div>
-    <div class="form-card"><tn-lead-form source="home-cta" /></div>
+    <div class="form-card"><tn-lead-form source="home" /></div>
   </div>
 </section>

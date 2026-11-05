@@ -1,16 +1,32 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 import { POSTS } from './content/posts.generated';
+import { SOLUTIONS } from './content/solutions';
 
-/** Every known page is prerendered to static HTML at build time; unknown URLs are rendered on the server as 404. */
-export const serverRoutes: ServerRoute[] = [
-  { path: '', renderMode: RenderMode.Prerender },
-  { path: 'solutions/ecommerce', renderMode: RenderMode.Prerender },
-  { path: 'book-demo', renderMode: RenderMode.Prerender },
-  { path: 'blog', renderMode: RenderMode.Prerender },
+/** Every known page, in both languages, is prerendered to static HTML; unknown URLs render on the server as 404. */
+const pages = (prefix: '' | 'ar/', lang: 'en' | 'ar'): ServerRoute[] => [
+  { path: prefix || '', renderMode: RenderMode.Prerender },
+  { path: `${prefix}solutions`, renderMode: RenderMode.Prerender },
   {
-    path: 'blog/:slug',
+    path: `${prefix}solutions/:slug`,
     renderMode: RenderMode.Prerender,
-    getPrerenderParams: async () => POSTS.map((p) => ({ slug: p.slug })),
+    getPrerenderParams: async () => SOLUTIONS[lang].map((s) => ({ slug: s.slug })),
   },
+  { path: `${prefix}platform`, renderMode: RenderMode.Prerender },
+  { path: `${prefix}company`, renderMode: RenderMode.Prerender },
+  { path: `${prefix}contact`, renderMode: RenderMode.Prerender },
+  { path: `${prefix}blog`, renderMode: RenderMode.Prerender },
+  {
+    path: `${prefix}blog/:slug`,
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => POSTS.filter((p) => p.lang === lang).map((p) => ({ slug: p.slug })),
+  },
+];
+
+export const serverRoutes: ServerRoute[] = [
+  ...pages('ar/', 'ar').map((r) => (r.path === 'ar/' ? { ...r, path: 'ar' } : r)),
+  ...pages('', 'en'),
+  // Old v1 URL, permanently moved to /contact.
+  { path: 'book-demo', renderMode: RenderMode.Server, status: 301 },
+  { path: 'ar/book-demo', renderMode: RenderMode.Server, status: 301 },
   { path: '**', renderMode: RenderMode.Server, status: 404 },
 ];

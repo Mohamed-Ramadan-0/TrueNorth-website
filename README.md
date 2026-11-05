@@ -1,18 +1,29 @@
 # موقع TrueNorth
 
-موقع الشركة v1: عربي أولًا، Angular 19 مع SSR و prerender. هدفه واحد: صاحب المتجر يحجز ديمو.
+موقع الشركة: TrueNorth شركة أنظمة AI agents. الموقع بلغتين، الإنجليزي على `/` والعربي على `/ar`، ومعمول بـ Angular 19 مع SSR و prerender.
 
-## الصفحات
+## الصفحات (بالإنجليزي، والعربي نفس المسار بعد `/ar`)
 
-| المسار | الصفحة | الريندر |
-|---|---|---|
-| `/` | الرئيسية: Hero، المشكلة، المجالات، ديمو واتساب تفاعلي، إزاي بنشتغل، التكاملات، الأسئلة، المدونة، فورم | Prerender |
-| `/solutions/ecommerce` | حل المتاجر: خطوات الـ agent الستة، الديمو، الأرقام اللي بنقيسها، الـ agents الجاية، السعر "تواصل معانا" | Prerender |
-| `/book-demo` | فورم حجز الديمو | Prerender |
-| `/blog` و `/blog/:slug` | المدونة | Prerender (كل مقالة صفحة HTML جاهزة) |
-| أي مسار تاني | صفحة 404 بـ status 404 حقيقي و `noindex` | SSR |
+| المسار | الصفحة |
+|---|---|
+| `/` | الرئيسية: Hero، الـ agents بتعمل إيه، الحلول حسب المجال، ديمو تفاعلي، مبادئ البناء، الأساس المشترك، طريقة الشغل، الرؤية، المدونة، الأسئلة، الفورم |
+| `/solutions` | كل الحلول |
+| `/solutions/ecommerce` | حل المتاجر (متاح): خطوات الـ agent، والديمو، والأرقام، والـ agents الجاية |
+| `/solutions/sales` · `/solutions/real-estate` | المجالات الجاية، وفيها فورم قائمة الانتظار |
+| `/solutions/custom` | دراسة أتمتة بسعر ثابت |
+| `/platform` | الـ agent بيشتغل إزاي: المسار، والأمان، والتشغيل، والقنوات |
+| `/company` | الرسالة، والرؤية، ومعنى الاسم، وإيه اللي بيفرقنا |
+| `/contact` | الفورم |
+| `/blog` · `/blog/:slug` | المدونة |
 
-ملتزمين بقاعدة الخطة: مفيش آراء عملاء ولا أرقام نتايج ولا لوجوهات. الديمو التفاعلي هو الدليل لحد ما تيجي دراسات الحالة.
+أي مسار مش موجود بيرجع صفحة 404 حقيقية. و `/book-demo` القديم بيتحول بـ 301 لـ `/contact`.
+
+ملتزمين بقاعدة خطة الشركة: مفيش آراء عملاء ولا أرقام نتايج ولا لوجوهات. الديمو الحي هو الدليل لحد ما يبقى فيه دراسات حالة.
+
+## الكلام والترجمة
+
+- **نصوص الموقع:** كلها في `src/app/content/copy.ts`، بالإنجليزي والعربي. التايب بيضمن إن النسختين فيهم نفس المفاتيح.
+- **صفحات الحلول:** في `src/app/content/solutions.ts`. ولما تضيف مجال جديد، صفحته بتطلع لوحدها في الموقع والـ sitemap.
 
 ## التشغيل
 
@@ -25,63 +36,63 @@ npm start            # تطوير على http://localhost:4200
 ```
 
 ```bash
-npm run build        # بيبني المحتوى، وبعدين الـ browser والـ server، وبيعمل prerender
+npm run build        # المحتوى، وبعدين البيلد، و prerender لكل الصفحات باللغتين
 ```
 
 ```bash
-npm run serve:ssr    # سيرفر Express على http://localhost:4000 (PORT لو عايز تغيره)
+npm run serve:ssr    # سيرفر Express على http://localhost:4000
 ```
 
 ## المدونة
 
-كل مقالة ملف Markdown في `content/blog/`، واسم الملف هو الـ slug:
+المقالات ملفات Markdown في `content/blog/en/` و `content/blog/ar/`، واسم الملف هو الـ slug:
 
 ```markdown
 ---
-title: "عنوان المقالة"
-description: "جملة أو اتنين، بتظهر في جوجل وفي الكروت"
+title: "Article title"
+description: "One or two sentences for Google and link previews"
+key: guardrails        # نفس القيمة في الترجمة التانية، علشان hreflang يربطهم
 date: 2026-11-05
-author: "فريق TrueNorth"
-tags: ["واتساب", "تأكيد الأوردرات"]
-# updated: 2026-11-20   اختياري
-# draft: true           متتنشرش
+author: "TrueNorth team"
+tags: ["AI agents"]
+# updated: 2026-11-20
+# draft: true
 ---
-
-نص المقالة...
 ```
 
-`npm run content` (بيشتغل لوحده قبل `start` و `build`) بيحوّل المقالات لـ `src/app/content/posts.generated.ts`، ويكتب `sitemap.xml` و `rss.xml` و `robots.txt` في `public/`. المقالة الجديدة بتتعملها prerender لوحدها.
+`npm run content` (بيشتغل لوحده قبل `start` و `build`) بيحوّل المقالات لـ `src/app/content/posts.generated.ts`. وبيكتب في `public/` الـ `sitemap.xml` (بروابط hreflang)، و `rss.xml` (إنجليزي)، و `rss-ar.xml`، و `robots.txt`.
 
 ## الـ SEO
 
-- **SSR و Prerender:** كل صفحة بتطلع HTML كامل للزاحف، وفيه `lang="ar" dir="rtl"`.
-- **لكل صفحة** (`src/app/core/seo.service.ts`): title و description و canonical و robots، و Open Graph و Twitter card، و JSON-LD.
-- **Structured data:** `Organization` و `WebSite` في كل صفحة، و `FAQPage` في الرئيسية، و `Service` في صفحة المتاجر، و `Blog` و `BlogPosting` في المدونة، و `BreadcrumbList`.
-- **Sitemap و RSS و robots.txt** بيتولدوا من المحتوى، و `/api/` ممنوعة من الأرشفة.
-- **صورة المشاركة** `public/og/default.png` والأيقونات بتترسم من `scripts/render-images.mjs`:
+- **SSR و prerender:** كل صفحة باللغتين بتطلع HTML كامل، وفيها `lang` و `dir` الصح.
+- **لكل صفحة:** title و description و canonical و robots و Open Graph (بالـ locale الصح) و Twitter card، و `hreflang` للإنجليزي والعربي و `x-default`.
+- **JSON-LD:** `Organization` و `WebSite` في كل صفحة، و `FAQPage` في الرئيسية، و `Service` لكل حل، و `ItemList` و `AboutPage` و `ContactPage` و `Blog` و `BlogPosting` و `BreadcrumbList`.
+- **صور المشاركة:** `public/og/en.png` و `public/og/ar.png` والأيقونات بتترسم كده:
 
 ```bash
 NODE_PATH=$(npm root -g) node scripts/render-images.mjs
 ```
 
-## فورم الديمو
+## الفورم
 
-الفورم بيبعت على `POST /api/leads` في `src/server.ts`. السيرفر بيتأكد من الحقول، وبيرمي البوتات بحقل honeypot، وبيحفظ كل طلب سطر JSON في `data/leads.jsonl` (أو المسار اللي في `LEADS_FILE`). لو حطيت `LEAD_WEBHOOK_URL` (Slack أو Zapier أو backend الـ agent) بيبعتله الطلب كمان.
+بيبعت على `POST /api/leads` في `src/server.ts`. السيرفر بيتأكد من الحقول، وبيرمي البوتات بحقل honeypot، وبيحفظ الطلب في `data/leads.jsonl` (إلا على Vercel). ولو `LEAD_WEBHOOK_URL` متحط، بيبعتله الطلب.
+
+## النشر
+
+- **أي سيرفر Node 18+:** `node dist/truenorth-website/server/server.mjs`، وخلي `data/` على volume دايم.
+- **Vercel:** اعمل Import للـ repo ده (مش `newpro`)، والـ Framework Preset يفضل Angular. وحط `LEAD_WEBHOOK_URL` في Environment Variables، لأن Vercel مبيحفظش ملفات.
 
 ## قبل النشر
 
-- [ ] **الدومين:** غيّر `url` في `src/app/core/site.ts`، وضيف الدومين في `security.allowedHosts` في `angular.json`. الطلبات من أي host مش في القايمة بتترفض.
+- [ ] **الدومين:** غيّر `url` في `src/app/core/site.ts`، وضيفه في `security.allowedHosts` في `angular.json`.
 - [ ] **الإيميل:** `email` في `site.ts` (حاليًا `hello@truenorth.ai`).
-- [ ] **السوق الأول:** الديمو والمقالات فيها مثال بالجنيه (`450 ج.م`). لو السعودية، غيّر العملة في `src/app/shared/chat-demo.component.ts` وفي `og:locale` (`ar_SA`).
-- [ ] **المنصة الأولى:** قسم التكاملات مكتوب فيه "بنربط المنصة اللي شغال عليها". لما الربط يشتغل فعلًا، اكتب اسمها.
-- [ ] **الاستضافة:** أي مكان بيشغل Node 18+، مثلًا `node dist/truenorth-website/server/server.mjs`. خلي `data/` على volume دايم.
-- [ ] **على Vercel:** اعمل Import للـ repo ده (`TrueNorth-website`)، وسيب الـ Framework Preset على Angular. الصفحات الجاهزة بتتقدم static، والـ SSR والـ `/api/leads` بيشتغلوا من `reqHandler` اللي في `src/server.ts`. ولأن Vercel مبيحفظش ملفات، حط `LEAD_WEBHOOK_URL` في Environment Variables، وإلا الطلبات هتفضل في الـ Function Logs بس. الدومين بتاعك ضيفه في `allowedHosts` (فيها `*.vercel.app` خلاص).
+- [ ] **مثال الديمو:** الإجمالي في الديمو "450" من غير عملة، علشان الموقع لكل الأسواق.
 - [ ] سجّل الموقع في Google Search Console وابعت `sitemap.xml`.
 
 ## الهوية البصرية
 
-الألوان والخطوط معرفين كـ tokens في أول `src/styles.css`:
+الـ tokens في أول `src/styles.css`:
 
-- **الألوان:** كحلي ملاحي `#0E1A2B`، وورق خرايط `#F1F3EF`، وبرتقالي إشارة `#F26A1B` بيتحط على حاجة واحدة بس في كل جزء: إبرة الشمال، والزرار الأساسي.
-- **الخطوط:** Readex Pro للعناوين، و IBM Plex Sans Arabic للنص.
-- **الحركة:** حاجة واحدة بس، وهي إن إبرة البوصلة في الـ Hero بتتهز وتستقر على الشمال. ودي بتقف لو المستخدم مفعّل `prefers-reduced-motion`.
+- **الألوان:** كحلي ملاحي `#0E1A2B`، وورق خرايط `#F1F3EF`، وبرتقالي إشارة `#F26A1B`.
+- **الخطوط:** Readex Pro للعناوين (عربي وإنجليزي)، و IBM Plex Sans Arabic للنص.
+- **الـ Hero:** مأخوذ من فكرة البوسترات (Calibrated Bearing). حقل إبر بوصلة كل إبرة فيه مايلة لوحدها، وبتتظبط على الشمال في موجة بتبدأ من مرجع برتقالي واحد مبيتحركش، يعني agents كتير متوجهة لهدف واحد. دي الحركة الوحيدة في الموقع، وبتقف مع `prefers-reduced-motion`.

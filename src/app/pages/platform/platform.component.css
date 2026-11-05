@@ -1,0 +1,16 @@
+.pipeline { list-style: none; padding: 0; margin: 2.5rem 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+.pipeline li { position: relative; padding: 0 1.5rem 0 0; }
+:host-context([dir='rtl']) .pipeline li { padding: 0 0 0 1.5rem; }
+.stage-n { width: 2.6rem; height: 2.6rem; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 500; background: var(--ink); color: var(--paper); position: relative; z-index: 1; margin-bottom: 1.2rem; }
+.pipeline li:not(.last)::after { content: ''; position: absolute; top: 1.3rem; inset-inline-start: 2.6rem; inset-inline-end: 0; border-top: 2px solid var(--ink); }
+.pipeline li:not(.last)::before { content: ''; position: absolute; top: calc(1.3rem - 5px); inset-inline-end: 0; border: 6px solid transparent; border-inline-start-color: var(--ink); border-inline-end: 0; transform: translateY(-.5px); }
+.pipeline li.last .stage-n { background: var(--signal); color: var(--ink); }
+.pipeline h3 { font-family: var(--display); font-weight: 500; font-size: 1.25rem; margin: 0 0 .5rem; }
+.pipeline p { margin: 0; color: var(--muted); max-width: 30ch; }
+@media (max-width: 900px) {
+  .pipeline { grid-template-columns: 1fr; gap: 1.8rem; }
+  .pipeline li, :host-context([dir='rtl']) .pipeline li { padding: 0 0 0 0; padding-inline-start: 3.6rem; }
+  .stage-n { position: absolute; inset-inline-start: 0; top: 0; }
+  .pipeline li:not(.last)::after { top: 2.6rem; bottom: -1.8rem; inset-inline-start: 1.3rem; inset-inline-end: auto; border-top: 0; border-inline-start: 2px solid var(--ink); }
+  .pipeline li:not(.last)::before { display: none; }
+}
