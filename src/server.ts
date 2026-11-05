@@ -44,13 +44,18 @@ app.post('/api/leads', express.json({ limit: '10kb' }), async (req, res) => {
     return;
   }
   try {
-    await mkdir(dirname(leadsFile), { recursive: true });
-    await appendFile(leadsFile, JSON.stringify(lead) + '\n');
+    // On Vercel the filesystem is read-only and wiped between requests, so leads
+    // go to LEAD_WEBHOOK_URL (and the function logs). Elsewhere they are also kept on disk.
+    if (!process.env['VERCEL']) {
+      await mkdir(dirname(leadsFile), { recursive: true });
+      await appendFile(leadsFile, JSON.stringify(lead) + '\n');
+    }
+    console.log('lead', JSON.stringify(lead));
     const hook = process.env['LEAD_WEBHOOK_URL'];
     if (hook) {
-      fetch(hook, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(lead) }).catch((e) =>
-        console.error('lead webhook failed', e),
-      );
+      // Awaited: a serverless function may be frozen as soon as the response is sent.
+      const r = await fetch(hook, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(lead) });
+      if (!r.ok) throw new Error(`lead webhook returned ${r.status}`);
     }
     res.status(201).json({ ok: true });
   } catch (e) {

@@ -75,6 +75,7 @@ NODE_PATH=$(npm root -g) node scripts/render-images.mjs
 - [ ] **السوق الأول:** الديمو والمقالات فيها مثال بالجنيه (`450 ج.م`). لو السعودية، غيّر العملة في `src/app/shared/chat-demo.component.ts` وفي `og:locale` (`ar_SA`).
 - [ ] **المنصة الأولى:** قسم التكاملات مكتوب فيه "بنربط المنصة اللي شغال عليها". لما الربط يشتغل فعلًا، اكتب اسمها.
 - [ ] **الاستضافة:** أي مكان بيشغل Node 18+، مثلًا `node dist/truenorth-website/server/server.mjs`. خلي `data/` على volume دايم.
+- [ ] **على Vercel:** اعمل Import للـ repo ده (`TrueNorth-website`)، وسيب الـ Framework Preset على Angular. الصفحات الجاهزة بتتقدم static، والـ SSR والـ `/api/leads` بيشتغلوا من `reqHandler` اللي في `src/server.ts`. ولأن Vercel مبيحفظش ملفات، حط `LEAD_WEBHOOK_URL` في Environment Variables، وإلا الطلبات هتفضل في الـ Function Logs بس. الدومين بتاعك ضيفه في `allowedHosts` (فيها `*.vercel.app` خلاص).
 - [ ] سجّل الموقع في Google Search Console وابعت `sitemap.xml`.
 
 ## الهوية البصرية

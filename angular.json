@@ -61,7 +61,8 @@
                 "localhost",
                 "127.0.0.1",
                 "truenorth.ai",
-                "*.truenorth.ai"
+                "*.truenorth.ai",
+                "*.vercel.app"
               ]
             },
             "ssr": {
